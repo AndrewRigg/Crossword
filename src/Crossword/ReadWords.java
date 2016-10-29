@@ -37,7 +37,7 @@ public class ReadWords {
 					//noDefinitions++;
 				}		
 				definitions.add(definition);
-				Word wordObj = new Word(word, definition);		
+				Word wordObj = new Word(word.trim(), definition.trim());		
 				//Word wordObj = new Word(word, definitions, noDefinitions);	
 				words.add(wordObj);				
 			}catch(NullPointerException e){
