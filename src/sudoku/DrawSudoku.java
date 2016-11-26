@@ -39,7 +39,7 @@ import java.awt.event.AWTEventListener; //??
  */
 public class DrawSudoku extends JComponent implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	private static int squareSize = 55;	
+	private static int squareSize = 50;	
 	int x, y;
 	public int getX() {
 		return x;
@@ -75,6 +75,7 @@ public class DrawSudoku extends JComponent implements ActionListener {
 	Font font, font2;
 	Random rand;
 	boolean solutionPushed, hintPushed, cluePushed;
+	int difficulty;
 	
 	ArrayList<KeyEvent> keys;
 	Action action;
@@ -91,13 +92,16 @@ public class DrawSudoku extends JComponent implements ActionListener {
 	
 	
 	
-	//@SuppressWarnings("unchecked")
-	public DrawSudoku(int difficulty) throws IOException{
+
+	public DrawSudoku(int[][] grid, int x, int y, int difficulty) throws IOException{
+
+	//public DrawSudoku(int difficulty) throws IOException{
 		
 		
 		font = new Font("Century Gothic", Font.PLAIN, 30);
 		font2 = new Font("Century Gothic", Font.PLAIN, 24);
 		
+		this.difficulty = difficulty;
 		int gridSize=9+2;
 		this.x = gridSize;     
 		this.y = gridSize;
@@ -109,7 +113,6 @@ public class DrawSudoku extends JComponent implements ActionListener {
 				grid[i][j] = 0;
 			}
 		}
-		
 		
 		
 		sol = new DrawSudokuSolution( x, y);  // Create the whole object that will be revealed on "show solution"
@@ -190,7 +193,7 @@ public class DrawSudoku extends JComponent implements ActionListener {
 		hint.addActionListener(this);
 		
 		
-		clue = new JButton("Clue");
+		clue = new JButton("Reveal");
 		clue.setFont(font2);
 		clue.addActionListener(this);
 		
@@ -259,7 +262,7 @@ public class DrawSudoku extends JComponent implements ActionListener {
 		c.gridx = 2;
 		c.gridy = 1;
 		c.ipady = 10;
-		panel.add(solution, c);
+		//panel.add(solution, c);
 		
 		frame = new JFrame("Auto Sudoku");
 		frame.setPreferredSize(new Dimension(squareSize*(x)+squareSize/2,squareSize*(y+2)+10));
@@ -295,7 +298,14 @@ public class DrawSudoku extends JComponent implements ActionListener {
 //			}
 //		}	
 		
-		
+
+		if(difficulty == 0){
+			initial_config = SudokuMethods.makeEasy( grid );	
+		}
+		else if(difficulty == 1){	
+			initial_config = SudokuMethods.makeMedium( grid );  // Might be ridiculously hard...
+		}	
+
 		
 		
 		// Put starting config into nums[][] JTextFields
@@ -341,6 +351,7 @@ public class DrawSudoku extends JComponent implements ActionListener {
 	
 	
 	public void actionPerformed(ActionEvent e) {
+		//change line below to " ==hint" to implement full answers in sudoku
 		if(e.getSource()==solution){		
 			
 			sol.frame.setVisible(!sol.frame.isVisible());

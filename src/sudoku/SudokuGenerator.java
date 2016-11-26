@@ -11,14 +11,18 @@ public class SudokuGenerator{
 	int gridSize;
 	int x;     
 	int y;
+	int difficulty;
 	int[][] grid;
 	Random rand;
 	JLabel [][] numbers;
 	
 	
 
-	public SudokuGenerator(int difficulty)throws IOException{
+	public SudokuGenerator(int difficulty)throws IOException{}
 		
+
+
+	public SudokuGenerator(int size, int difficulty)throws IOException{
 
 		row = new ArrayList<Integer>();
 		cols = new ArrayList<ArrayList<Integer>>();
@@ -28,14 +32,31 @@ public class SudokuGenerator{
 		checks = new ArrayList<Integer>();
 		fullGrid = new ArrayList<ArrayList<Integer>>();
 		puzzleGrid = new ArrayList<ArrayList<Integer>>();
+		this.difficulty = difficulty;
+		
+
+		gridSize=9+2;
+		
+		x = gridSize;     
+		y = gridSize;
 		
 		
-		
+		grid = new int[x][y];		
+		for(int i = 0; i < y; i++){
+			for( int j = 0; j < x; j++){
+				grid[i][j] = 0;
+			}
+		}
+
+		//generateSudoku();
+		//removeNumbers(fullGrid);
+		//System.out.println(fullGrid.toString());
+		new DrawSudoku(grid, x, y, difficulty);
 
 		
 		
 		// Solution and start grid made in here.
-		new DrawSudoku(difficulty);
+		//new DrawSudoku(difficulty);
 		
 		
 	}

@@ -53,7 +53,7 @@ public class PuzzleLoader extends JComponent implements ActionListener{
 	JPanel panel, grid, country, country2;
 	JButton cwd, wds, sud, signup, login;
 	JLabel intro, pic, flag, flag2, arrow, clueLanguage, solutionLanguage;
-	Font font, font2, font3, font4;
+	Font font, font2, font3, font4, font5;
 	/// STEVE: these weren't initialised when automatic scroller difficulty was used
 	///     2 implies defualt is "EASY" -- need to change this if we change defualt scroller value
 	int cwdDiff=2; 
@@ -77,13 +77,13 @@ public class PuzzleLoader extends JComponent implements ActionListener{
 			frame = new JFrame("Welcome to PuzzleLoader "+ user);
 		}
 
-		frame.setMinimumSize(new Dimension(550,400));
+		frame.setMinimumSize(new Dimension(400,100));
 		
 		font = new Font("Century Gothic", Font.BOLD, 40);
 		font2 = new Font("Century Gothic", Font.PLAIN, 24);
 		font3 = new Font("Century Gothic", Font.PLAIN, 20);
 		font3 = new Font("Century Gothic", Font.PLAIN, 16);
-		
+		font5 = new Font("Century Gothic", Font.PLAIN, 45);
 		
 		clueLanguage = new JLabel("CLUES");
 		clueLanguage.setFont(font3);
@@ -117,21 +117,21 @@ public class PuzzleLoader extends JComponent implements ActionListener{
 			countries3[i] = countries[i].toUpperCase();
 		}
 		
-		intro = new JLabel();
-		intro.setFont(font);
+		intro = new JLabel("Puzzle Generator");
+		intro.setFont(font5);
 		intro.setHorizontalAlignment(SwingConstants.CENTER);
-		intro.setOpaque(false);
-		intro.setBounds(0, 0,frame.getWidth(),300);
-		intro.setBackground(new Color(255,255,255,255));
-		intro.setBorder(null);
+		intro.setOpaque(true);
+		//intro.setBounds(0, 0,frame.getWidth(),300);
+		intro.setBackground(new Color(240,240,240,255));
+		//intro.setBorder(null);
 		
 		country = new JPanel(new GridBagLayout());
-		country.setBounds(365,10,155, 40);
+		country.setBounds(266,10,155, 40);
 		country.setVisible(true);
 		country.setOpaque(false);
 		
 		country2 = new JPanel(new GridBagLayout());
-		country2.setBounds(242,10,120, 40);
+		country2.setBounds(145,10,120, 40);
 		country2.setVisible(true);
 		country2.setOpaque(false);
 		
@@ -159,13 +159,13 @@ public class PuzzleLoader extends JComponent implements ActionListener{
 		language2.setFont(font4);
 	//	language2.setVisible(false);
 		
-		model1 = new SpinnerNumberModel(12, 4, 30, 1);
+		model1 = new SpinnerNumberModel(15, 4, 30, 1);
 		spinner1 = new JSpinner(model1);
 		spinner1.setForeground(Color.WHITE);
 		spinner1.setEditor(new JSpinner.DefaultEditor(spinner1));
 		spinner1.setFont(font2);
 		
-		model2 = new SpinnerNumberModel(8, 4, 50, 1);
+		model2 = new SpinnerNumberModel(15, 4, 50, 1);
 		spinner2 = new JSpinner(model2);
 		spinner2.setForeground(Color.WHITE);
 		spinner2.setEditor(new JSpinner.DefaultEditor(spinner2));
@@ -180,11 +180,11 @@ public class PuzzleLoader extends JComponent implements ActionListener{
 		
 		panel = new JPanel(new GridBagLayout());
 		panel.setBackground(new Color(220,220,250,255));
-		panel.setBounds(0,0,550,375);
+		panel.setBounds(0,0,440,200);
 		panel.setOpaque(false); 
 		
 		
-		grid = new JPanel(new GridLayout(3, 1));
+		grid = new JPanel(new GridLayout(1, 3));
 		cwd = new JButton();
 		cwd.setFont(font2);
 		cwd.setHorizontalAlignment(SwingConstants.CENTER);
@@ -222,8 +222,8 @@ public class PuzzleLoader extends JComponent implements ActionListener{
 		flag2.setIcon(flags2[0]);
 		arrow.setIcon(arr1[0]);
 		
-		frame.setPreferredSize(new Dimension(550,400));
-		frame.setSize(550, 400);
+		frame.setPreferredSize(new Dimension(440,228));
+		frame.setSize(440, 200);
 				
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -234,52 +234,58 @@ public class PuzzleLoader extends JComponent implements ActionListener{
 		c.gridy = 0;	
 		c.gridwidth = 1;
 		c.insets = new Insets(0,0,0,0);
-		country.add(arrow, c);
+		//country.add(arrow, c);
 		
 		c.weightx = 1.0;
 		c.weighty = 0.0;
-		c.gridx = 1;
+		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 1;
 		c.insets = new Insets(0,0,0,0);
-		country.add(flag2, c);
-		
-		c.weightx = 1.0;
-		c.weighty = 0.0;
-		c.gridx = 2;
-		c.gridy = 0;
-		c.gridwidth = 1;
-		country.add(language2, c);
+		//country.add(flag2, c);
+		//panel.add(flag2, c);
 		
 		c.weightx = 1.0;
 		c.weighty = 0.0;
 		c.gridx = 1;
 		c.gridy = 0;
-		c.gridheight = 1;		
-		country2.add(flag, c);
+		c.gridwidth = 1;
+		//country.add(language2, c);
+		//panel.add(language2, c);
 		
 		c.weightx = 1.0;
 		c.weighty = 0.0;
-		c.gridx = 2;
-		c.gridy = 0;
+		c.gridx = 0;
+		c.gridy = 2;
 		c.gridheight = 1;		
-		country2.add(language, c);
+		//country2.add(flag, c);
+		//panel.add(flag, c);
+		
+		c.weightx = 1.0;
+		c.weighty = 0.0;
+		c.gridx = 1;
+		c.gridy = 2;
+		c.gridheight = 1;		
+		//country2.add(language, c);
+		//panel.add(language, c);
 		
 		c.weightx = 0.0;
 		c.weighty = 0.0;
-		c.gridx = 2;
+		c.gridx = 1;
 		c.gridy = 1;	
 		c.gridwidth = 1;
 		c.insets = new Insets(0,10,0,0);
-		country2.add(clueLanguage, c);
+		//country2.add(clueLanguage, c);
+		//panel.add(clueLanguage, c);
 		
 		c.weightx = 1.0;
 		c.weighty = 0.0;
-		c.gridx = 2;
-		c.gridy = 1;	
-		c.gridwidth = 1;
+		c.gridx = 1;
+		c.gridy = 3;	
+		c.gridwidth = 2;
 		c.insets = new Insets(0,0,0,0);
-		country.add(solutionLanguage, c);
+		//country.add(solutionLanguage, c);
+		//panel.add(solutionLanguage, c);
 		
 		grid.add(cwd);
 		grid.add(wds);
@@ -288,9 +294,18 @@ public class PuzzleLoader extends JComponent implements ActionListener{
 		c.weightx = 0.0;
 		c.weighty = 1.0;
 		c.gridx = 0;
-		c.gridy = 0;
-		c.gridheight = 3;
+		c.gridy = 1;
+		c.gridwidth = 3;
 		c.insets = new Insets(0,0,0,0);
+		panel.add(intro, c);
+		
+		
+		
+		
+		c.weightx = 1.0;
+		c.weighty = 1.0;
+		c.gridx = 0;
+		c.gridy = 2;
 		panel.add(grid, c);
 		
 		c.fill = GridBagConstraints.BOTH;	
@@ -301,52 +316,55 @@ public class PuzzleLoader extends JComponent implements ActionListener{
 		c.gridwidth = 1;
 		c.gridheight = 1;
 		c.ipady = 5;
-		c.insets = new Insets(60,10,50,260);
-		panel.add(spinner1, c);
+		c.insets = new Insets(60,10,50,20);
+		//panel.add(spinner1, c);
 		
 		c.weightx = 0.0;
 		c.weighty = 0.0;
 		c.gridx = 2;
 		c.gridy = 1;
 		c.gridheight = 1;
-		c.insets = new Insets(30,10,50,260);
-		panel.add(spinner2, c);
+		c.insets = new Insets(50,10,50,20);
+		//panel.add(spinner2, c);
 		
-//		c.weightx = 0.0;
-//		c.weighty = 0.0;
-//		c.gridx = 1;
-//		c.gridy = 2;
-//		c.gridheight = 1;
-//		c.insets = new Insets(40,30,45,15);
-//		panel.add(spinner3, c);
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.gridx = 2;
+		c.gridy = 2;
+		c.gridheight = 1;
+		c.insets = new Insets(70,70,75,10);
+		//panel.add(spinner3, c);
 		
 		c.weightx = 0.0;
 		c.weighty = 0.0;
 		c.gridx = 1;
 		c.gridy = 0;
-		c.insets = new Insets(60,10,50,0);
-		panel.add(cwdDifficulty, c);
+		c.gridwidth = 1;
+		c.insets = new Insets(65,10,50,100);
+		//panel.add(cwdDifficulty, c);
 		
 		c.weightx = 0.0;
 		c.weighty = 0.0;
 		c.gridx = 1;
 		c.gridy = 1;
-		c.insets = new Insets(30,10,50,0);
-		panel.add(wdsDifficulty, c);
+		c.gridwidth = 1;
+		c.insets = new Insets(55,10,50,100);
+		//panel.add(wdsDifficulty, c);
 		
 		c.weightx = 1.0;
 		c.weighty = 0.0;
 		c.gridx = 1;
 		c.gridy = 2;
-		c.insets = new Insets(10,10,50,0);
-		panel.add(sudDifficulty, c);
+		c.gridwidth = 1;
+		c.insets = new Insets(38,10,10,100);
+		//panel.add(sudDifficulty, c);
 		
 		
 		layer = new JLayeredPane();
 		layer.setAlignmentX(frame.getWidth());
 		layer.add(panel, new Integer(0));
-		layer.add(country, new Integer(0));
-		layer.add(country2, new Integer(0));
+//		layer.add(country, new Integer(0));
+//		layer.add(country2, new Integer(0));
 		layer.setVisible(true);
 		layer.setOpaque(true);
 		
@@ -518,9 +536,10 @@ public class PuzzleLoader extends JComponent implements ActionListener{
 		}
 		if(e.getSource() == sud){
 			try {
-				//sudDiff = getDifficulty(cwdDifficulty.getSelectedIndex());
-				//sudo = new SudokuGenerator((Integer)spinner3.getValue());
-				sudo = new SudokuGenerator(  sudDiff   );
+				sudDiff = sudDifficulty.getSelectedIndex();
+				System.out.println("diff: " +sudDiff);
+				sudo = new SudokuGenerator(9, sudDiff);
+
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
