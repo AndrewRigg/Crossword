@@ -392,7 +392,9 @@ public class SudokuMethods {
 				}
 				else if( x_coords.size()==0  ){
 					//no hint available from this method - could be the case for harder sudoku puzzles
-					System.out.println("No hints availabel for this method. DEAL WITH THIS");  //TODO
+					
+					System.out.println("No hints available for this method. DEAL WITH THIS");  //TODO
+					return null;
 				}
 			}		
 		}

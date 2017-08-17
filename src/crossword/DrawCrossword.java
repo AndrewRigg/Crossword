@@ -659,6 +659,7 @@ public class DrawCrossword extends JComponent implements ActionListener, AWTEven
 		c.gridy = 1;
 		c.ipady = 10;
 		c.ipadx = 400;
+		c.fill = SwingConstants.CENTER;
 		c.gridwidth = 1;
 		panel.add(hint, c);
 

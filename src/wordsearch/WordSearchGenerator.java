@@ -12,13 +12,15 @@ public class WordSearchGenerator{
 	int y;
 	int difficulty;
 	String[][] grid;
+	String dictionary = "words_cambridge.txt";
 	ArrayList<String> acrossClues;
 	ArrayList<String> downClues;
 	ArrayList<Word> words;	
 	
-	public WordSearchGenerator(int wordsearchSize, int difficulty) throws IOException{
+	public WordSearchGenerator(int wordsearchSize, int difficulty, String dictionary, String languageFrom, String languageTo, String currentTopic) throws IOException{
 		this.difficulty = difficulty;
 		this.wordsearchSize = wordsearchSize;
+		this.dictionary = dictionary;
 		gridSize = wordsearchSize + 2;
 		x = gridSize;     
 		y = gridSize;
@@ -26,7 +28,7 @@ public class WordSearchGenerator{
 		acrossClues = new ArrayList<String>();
 		downClues = new ArrayList<String>();
 		ArrayList<Word> words = new ArrayList<Word>();
-		words = crossword.ReadWords.getWordsandDefs("words_cambridge.txt");		
+		words = crossword.ReadWords.getWordsandDefs(dictionary);		
 		
 		
 		
@@ -104,6 +106,6 @@ public class WordSearchGenerator{
 					}				
 				}
 			}	
-		new DrawWordSearch(grid, x, y, acrossClues, downClues, entries, difficulty);
+		new DrawWordSearch(grid, x, y, acrossClues, downClues, entries, difficulty, languageFrom, languageTo, currentTopic);
 	}
 }

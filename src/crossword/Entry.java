@@ -180,6 +180,10 @@ public class Entry {
 		return this.word;
 	}
 
+	public void setWord(String word){
+		this.word = word; 
+	}
+	
 	public String getDefinition() {
 		return this.definition;
 	}

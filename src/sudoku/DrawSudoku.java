@@ -3,11 +3,13 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -39,6 +41,8 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
+import javax.swing.text.Caret;
+import javax.swing.text.DefaultCaret;
 
 import crossword.JTextFieldLimit;
 import crossword.SetUpImages;
@@ -72,12 +76,12 @@ public class DrawSudoku extends JComponent implements ActionListener, MouseListe
 	}
 	
 	// Define colors
-	Color HIGHLIGHT_COLOUR = new Color( 163 , 194,  163);
+	Color HIGHLIGHT_COLOUR = new Color( 230 , 230,  230);
 //	Color HINT_COLOR = new Color(150,150,220);
-	Color HINT_COLOR = new Color(180,204,255);
+	Color HINT_COLOR = new Color(170,220,230);
 
-	Color wrong = new Color(255,20,20);
-	Color correct = new Color( 50 , 180,  50);
+	Color wrong = new Color(230,0,0);
+	Color correct = new Color( 0 , 255,  0);
 	//Color correct = new Color( 20 , 255,  20);
 	//Color fixed = new Color(90,90,90);
 	Color fixed = new Color(40,40,40);
@@ -338,7 +342,8 @@ public class DrawSudoku extends JComponent implements ActionListener, MouseListe
 		largeGrid.setBounds(squareSize-1,squareSize-1,squareSize*(x-2),squareSize*(y-2));
 		largeGrid.setOpaque(false);
 		largeGrid.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-
+		
+		Color white = new Color(255,255,255, 255);
 		for (int i = 0; i < x-2; i++){
 			for (int j = 0; j < y-2; j++){
 				nums[i][j] = new JTextField();
@@ -349,7 +354,8 @@ public class DrawSudoku extends JComponent implements ActionListener, MouseListe
 				nums[i][j].setDocument(new JTextFieldLimit(1, false));				
 				keyActionTextField(nums[i][j]);
 				nums[i][j].addMouseListener(this);
-
+				nums[i][j].setCaretColor(white);
+				
 				transparentLayer.add(nums[i][j]);
 			}
 		}
@@ -517,12 +523,13 @@ public class DrawSudoku extends JComponent implements ActionListener, MouseListe
 								System.out.println("nums: " + Integer.parseInt(nums[i][j].getText()));
 								System.out.println("init: "+grid2[i][j]);
 								if( Integer.parseInt(nums[i][j].getText())== grid2[i][j] && nums[i][j].isEditable()){
-									nums[i][j].setForeground( correct );
+									nums[i][j].setBackground( correct );
 								}
 								else if( Integer.parseInt(nums[i][j].getText())!= grid2[i][j] && nums[i][j].isEditable()){
 //									System.out.println("nums: " + Integer.parseInt(nums[i][j].getText()));
 //									System.out.println("init: "+initial_config[i][j]);
-									nums[i][j].setForeground( wrong );
+									nums[i][j].setBackground( wrong );
+									nums[i][j].setForeground( new Color(255,255,255) );
 								}
 							}
 					}					
@@ -535,6 +542,7 @@ public class DrawSudoku extends JComponent implements ActionListener, MouseListe
 				for (int i = 0; i < x-2; i++){
 					for (int j = 0; j < y-2; j++){
 						if( nums[i][j].isEditable() ){
+							nums[i][j].setBackground(new Color(255,255,255));
 							nums[i][j].setForeground(new Color(0,0,0));
 						}
 						else{
@@ -554,13 +562,23 @@ public class DrawSudoku extends JComponent implements ActionListener, MouseListe
 			//choose font submenu
 		}
 		if(e.getSource()==hint){
-			
+			boolean hintAvailable = false;
+			if(buttonPushed){
+				buttonPushed = !buttonPushed;
+				clue.setText("Check");
+				for (int row = 0; row < gridsize ; row++) {
+					for (int col = 0; col < gridsize ; col++) {	
+						 nums[row][col].setForeground(Color.BLACK);
+					}
+				}
+			}
 			//we need an array of ints for the hint finding method
 			int[][] nummys = new int[9][9];
 			for (int plm=0; plm<9; plm++){
 				for(int ijn=0; ijn<9; ijn++){
 					if( nums[plm][ijn].getText().equals("") ){
 						nummys[plm][ijn] = 0;
+						hintAvailable = true;
 					}
 					else{
 						nummys[plm][ijn]= Integer.parseInt(   nums[plm][ijn].getText()  );
@@ -574,11 +592,13 @@ public class DrawSudoku extends JComponent implements ActionListener, MouseListe
 				}
 			}	
 			
+			if(hintAvailable){
 			// Do one step in solving sudoku and pick one that would be entered
 			int[] hint_xy= SudokuMethods.getHint_singles_hiddenSingles( nummys  );
-			nums[ hint_xy[0] ][ hint_xy[1] ].setBackground( HINT_COLOR );				
+			nums[ hint_xy[0] ][ hint_xy[1] ].setBackground( HINT_COLOR );		
+			nums[ hint_xy[0] ][ hint_xy[1] ].setCaretColor(HINT_COLOR);
 			nums[ hint_xy[0] ][ hint_xy[1] ].requestFocus();
-
+			}
 		}
 		
 		if(e.getSource()==clue){
@@ -693,6 +713,7 @@ public class DrawSudoku extends JComponent implements ActionListener, MouseListe
 					for (int col = 0; col < gridsize ; col++) {	
 						if (e.getSource() == nums[row][col]) {
 							 nums[row][col].setBackground(Color.WHITE);
+							 nums[row][col].setCaretColor(Color.WHITE);
 							if (e.getKeyCode() == KeyEvent.VK_UP) {
 								int newstart=row;
 								if( newstart-1 < 0 ){
@@ -701,8 +722,9 @@ public class DrawSudoku extends JComponent implements ActionListener, MouseListe
 								nums[ (newstart-1) ][col].requestFocus();
 								nums[ newstart-1 ][col].getCaret().setVisible(true);
 								nums[newstart-1][col].setBackground(HIGHLIGHT_COLOUR);
+								nums[newstart-1][col].setCaretColor(HIGHLIGHT_COLOUR);
 							}
-							if (e.getKeyCode() == KeyEvent.VK_DOWN) {		
+							else if (e.getKeyCode() == KeyEvent.VK_DOWN) {		
 								
 								int newstart=row;
 								if( newstart+1 > gridsize-1 ){
@@ -712,8 +734,9 @@ public class DrawSudoku extends JComponent implements ActionListener, MouseListe
 								nums[ (newstart+1) ][col].requestFocus();
 								nums[ newstart+1 ][col].getCaret().setVisible(true);
 								nums[ newstart+1][col].setBackground(HIGHLIGHT_COLOUR);
+								nums[newstart+1][col].setCaretColor(HIGHLIGHT_COLOUR);
 							}
-							if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+							else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 								
 								int newstart=col;
 								if( newstart+1 > gridsize-1 ){
@@ -722,8 +745,9 @@ public class DrawSudoku extends JComponent implements ActionListener, MouseListe
 								nums[ row ][ newstart+1 ].requestFocus();
 								nums[ row ][ newstart+1 ].getCaret().setVisible(true);
 								nums[row][ newstart+1].setBackground(HIGHLIGHT_COLOUR);
+								nums[row][newstart+1].setCaretColor(HIGHLIGHT_COLOUR);
 							}
-							if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+							else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 								
 								 
 								
@@ -734,18 +758,22 @@ public class DrawSudoku extends JComponent implements ActionListener, MouseListe
 								nums[ row ][ newstart-1 ].requestFocus();
 								nums[ row ][ newstart-1 ].getCaret().setVisible(true);
 								nums[row][ newstart-1 ].setBackground(HIGHLIGHT_COLOUR);
+								nums[row][newstart-1].setCaretColor(HIGHLIGHT_COLOUR);
 							}
 
-							if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+							else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
 								nums[row][col].setText("");	
 								nums[row][col].setBackground(HIGHLIGHT_COLOUR);
+								nums[row][col].setCaretColor(HIGHLIGHT_COLOUR);
 							}
-
+						
+							else{
+								nums[row][col].setBackground(HIGHLIGHT_COLOUR);
+								nums[row][col].setCaretColor(HIGHLIGHT_COLOUR);
+							}
 						}
-
 					}
 				}
-
 			}
 
 			@Override
@@ -805,6 +833,7 @@ public class DrawSudoku extends JComponent implements ActionListener, MouseListe
 				if (e.getSource() == nums[row][col]) {
 
 					 nums[row][col].setBackground(HIGHLIGHT_COLOUR);
+					 nums[row][col].setCaretColor(HIGHLIGHT_COLOUR);
 				}
 			}
 		}

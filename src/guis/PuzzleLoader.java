@@ -123,7 +123,7 @@ public class PuzzleLoader implements ActionListener{
 		}
 		if(e.getSource() == wds){
 			try {
-				wordsearch = new WordSearchGenerator(15, 2);
+				wordsearch = new WordSearchGenerator(15, 2, "words_cambridge.txt", "English", "English" , "None");
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}

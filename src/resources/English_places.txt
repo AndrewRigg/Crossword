@@ -1,0 +1,44 @@
+school
+university
+work
+hospital
+library
+dentist
+doctors
+factory
+hair dresser
+police station
+butchers
+bakers
+grocers
+market
+supermarket
+home
+skyscraper
+pub
+nightclub
+park
+swimming pool
+ice rink
+gym
+farm
+cafe
+restaurant
+church
+cathedral
+mosque
+synagogue
+garage
+motorway
+village
+town
+city
+country
+countryside
+shoe shop
+bank
+arcade
+mall
+stadium
+forest
+beach
